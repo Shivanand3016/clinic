@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Luxe | Premium Wellness & Aesthetics</title>
+    
+    <!-- Google Fonts: Playfair Display for luxury headings, Inter for clean body text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons for elegant line icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f7f7f6',
+                            100: '#eae9e5',
+                            200: '#d3cfc6',
+                            300: '#b4ab9c',
+                            400: '#9b8d78',  // Champagne/Gold
+                            500: '#8a7a63',
+                            600: '#726351',
+                            700: '#5a4f43',
+                            800: '#1a1f24',  // Deep Charcoal/Navy for text
+                            900: '#111518',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'slide-in-right': 'slideInRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: 0, transform: 'translateY(30px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        slideInRight: {
+                            '0%': { opacity: 0, transform: 'translateX(30px)' },
+                            '100%': { opacity: 1, transform: 'translateX(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles for Animations and Details */
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            color: #1a1f24;
+            background-color: #fcfcfc;
+        }
+
+        /* Scroll Reveal Utility Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* Custom Input Styling */
+        .input-field {
+            width: 100%;
+            border-bottom: 1px solid #d3cfc6;
+            background: transparent;
+            padding: 0.75rem 0;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            outline: none;
+        }
+        .input-field:focus {
+            border-color: #9b8d78;
+        }
+        .input-field::placeholder {
+            color: #b4ab9c;
+            font-weight: 300;
+        }
+
+        /* Custom Date Picker Indicator hiding (for cleaner look) */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            opacity: 0.6;
+            transition: 0.2s;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator:hover {
+            opacity: 1;
+        }
+
+        /* Interactive Time Slots */
+        .time-slot {
+            border: 1px solid #eae9e5;
+            transition: all 0.3s ease;
+        }
+        .time-slot.selected {
+            background-color: #9b8d78;
+            color: white;
+            border-color: #9b8d78;
+        }
+        .time-slot:hover:not(.selected) {
+            border-color: #9b8d78;
+            color: #9b8d78;
+        }
+
+        /* Smooth Image Zoom on Hover */
+        .img-zoom-container {
+            overflow: hidden;
+        }
+        .img-zoom-container img {
+            transition: transform 0.7s ease;
+        }
+        .img-zoom-container:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Glassmorphism Navigation */
+        .nav-scrolled {
+            background: rgba(252, 252, 252, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased overflow-x-hidden selection:bg-brand-400 selection:text-white">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4 bg-transparent">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 flex justify-between items-center">
+            <a href="#" class="text-2xl font-serif tracking-wide text-brand-800 flex items-center gap-2">
+                <i class="ph-light ph-sparkle text-brand-400"></i>
+                AURA LUXE
+            </a>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-10 items-center">
+                <a href="#about" class="text-sm uppercase tracking-widest text-brand-700 hover:text-brand-400 transition-colors">Philosophy</a>
+                <a href="#services" class="text-sm uppercase tracking-widest text-brand-700 hover:text-brand-400 transition-colors">Treatments</a>
+                <a href="#facility" class="text-sm uppercase tracking-widest text-brand-700 hover:text-brand-400 transition-colors">The Clinic</a>
+                <a href="#booking" class="bg-brand-800 text-white px-6 py-2.5 text-sm uppercase tracking-widest hover:bg-brand-600 transition-colors rounded-sm">Consultation</a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-brand-800 focus:outline-none">
+                <i class="ph ph-list text-3xl"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white shadow-xl flex flex-col p-6 space-y-4 border-t border-brand-100">
+            <a href="#about" class="text-sm uppercase tracking-widest text-brand-700 p-2">Philosophy</a>
+            <a href="#services" class="text-sm uppercase tracking-widest text-brand-700 p-2">Treatments</a>
+            <a href="#facility" class="text-sm uppercase tracking-widest text-brand-700 p-2">The Clinic</a>
+            <a href="#booking" class="bg-brand-800 text-white px-6 py-3 text-sm uppercase tracking-widest text-center rounded-sm">Consultation</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center pt-20">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80&w=2000" alt="Luxury Clinic Interior" class="w-full h-full object-cover object-center" />
+            <!-- Soft gradient overlay for text legibility -->
+            <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/70 to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div class="pt-10 md:pt-0">
+                <span class="block text-brand-400 text-sm font-semibold tracking-[0.2em] uppercase mb-4 animate-fade-in-up">Welcome to Aura Luxe</span>
+                <h1 class="text-5xl lg:text-7xl font-serif text-brand-800 leading-[1.1] mb-6 animate-fade-in-up" style="animation-delay: 0.1s;">
+                    Elevate Your <br> <span class="italic text-brand-600">Wellbeing.</span>
+                </h1>
+                <p class="text-lg text-brand-700 font-light mb-10 max-w-md leading-relaxed animate-fade-in-up" style="animation-delay: 0.2s;">
+                    Experience bespoke aesthetic and wellness treatments in an environment designed for absolute tranquility and unparalleled precision.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 animate-fade-in-up" style="animation-delay: 0.3s;">
+                    <a href="#booking" class="bg-brand-800 text-white px-8 py-4 text-sm uppercase tracking-widest hover:bg-brand-600 transition-colors text-center rounded-sm">Book Appointment</a>
+                    <a href="#services" class="border border-brand-800 text-brand-800 px-8 py-4 text-sm uppercase tracking-widest hover:bg-brand-50 transition-colors text-center rounded-sm">Explore Treatments</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Philosophy / About Section -->
+    <section id="about" class="py-24 lg:py-32 bg-brand-50">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="order-2 lg:order-1 img-zoom-container rounded-sm">
+                    <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=1000" alt="Doctor Consultation" class="w-full h-[600px] object-cover shadow-2xl" />
+                </div>
+                <div class="order-1 lg:order-2 reveal">
+                    <span class="text-brand-400 text-sm font-semibold tracking-[0.2em] uppercase mb-4 block">Our Philosophy</span>
+                    <h2 class="text-4xl lg:text-5xl font-serif text-brand-800 mb-6">Artistry Meets Advanced Medicine.</h2>
+                    <p class="text-brand-700 font-light leading-relaxed mb-6">
+                        At Aura Luxe, we believe that true beauty and wellness stem from a holistic approach. Our board-certified specialists combine state-of-the-art medical technology with a refined artistic eye to deliver natural, transformative results.
+                    </p>
+                    <p class="text-brand-700 font-light leading-relaxed mb-10">
+                        Every patient journey begins with a comprehensive, bespoke consultation in our luxury private suites, ensuring your absolute comfort and confidentiality.
+                    </p>
+                    <div class="grid grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-3xl font-serif text-brand-800 mb-2">15+</h4>
+                            <p class="text-xs uppercase tracking-widest text-brand-600">Years Excellence</p>
+                        </div>
+                        <div>
+                            <h4 class="text-3xl font-serif text-brand-800 mb-2">10k+</h4>
+                            <p class="text-xs uppercase tracking-widest text-brand-600">Happy Patients</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Overview -->
+    <section id="services" class="py-24 lg:py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="text-center mb-20 reveal">
+                <span class="text-brand-400 text-sm font-semibold tracking-[0.2em] uppercase mb-4 block">Bespoke Treatments</span>
+                <h2 class="text-4xl lg:text-5xl font-serif text-brand-800">Curated For You</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <!-- Service 1 -->
+                <div class="group cursor-pointer reveal reveal-delay-1">
+                    <div class="img-zoom-container mb-6 rounded-sm shadow-md">
+                        <img src="https://images.unsplash.com/photo-1614859324967-bdf473b6b198?auto=format&fit=crop&q=80&w=800" alt="Aesthetic Injectables" class="w-full h-80 object-cover" />
+                    </div>
+                    <h3 class="text-2xl font-serif text-brand-800 mb-3 group-hover:text-brand-400 transition-colors">Aesthetic Injectables</h3>
+                    <p class="text-brand-600 font-light text-sm mb-4 line-clamp-2">Enhance natural contours and restore youthful volume with our premium selection of neuromodulators and dermal fillers.</p>
+                    <span class="text-xs uppercase tracking-widest text-brand-800 border-b border-brand-800 pb-1 group-hover:border-brand-400 group-hover:text-brand-400 transition-colors">Discover More</span>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="group cursor-pointer reveal reveal-delay-2">
+                    <div class="img-zoom-container mb-6 rounded-sm shadow-md">
+                        <img src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&q=80&w=800" alt="Skin Rejuvenation" class="w-full h-80 object-cover" />
+                    </div>
+                    <h3 class="text-2xl font-serif text-brand-800 mb-3 group-hover:text-brand-400 transition-colors">Skin Rejuvenation</h3>
+                    <p class="text-brand-600 font-light text-sm mb-4 line-clamp-2">Advanced laser therapies, clinical peels, and micro-needling designed to reveal your most radiant, flawless complexion.</p>
+                    <span class="text-xs uppercase tracking-widest text-brand-800 border-b border-brand-800 pb-1 group-hover:border-brand-400 group-hover:text-brand-400 transition-colors">Discover More</span>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="group cursor-pointer reveal reveal-delay-3">
+                    <div class="img-zoom-container mb-6 rounded-sm shadow-md">
+                        <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&q=80&w=800" alt="Wellness Therapies" class="w-full h-80 object-cover" />
+                    </div>
+                    <h3 class="text-2xl font-serif text-brand-800 mb-3 group-hover:text-brand-400 transition-colors">Wellness Therapies</h3>
+                    <p class="text-brand-600 font-light text-sm mb-4 line-clamp-2">Optimize your internal health with custom IV hydration, bio-identical hormone therapy, and longevity protocols.</p>
+                    <span class="text-xs uppercase tracking-widest text-brand-800 border-b border-brand-800 pb-1 group-hover:border-brand-400 group-hover:text-brand-400 transition-colors">Discover More</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clinic/Ambiance Section -->
+    <section id="facility" class="py-24 bg-brand-800 text-white text-center reveal">
+        <div class="max-w-4xl mx-auto px-6">
+            <i class="ph-light ph-diamond text-4xl text-brand-400 mb-6 inline-block"></i>
+            <h2 class="text-3xl lg:text-5xl font-serif mb-8 leading-snug">"An oasis of calm and professionalism. The attention to detail is truly unparalleled."</h2>
+            <p class="text-brand-300 font-light tracking-widest uppercase text-sm">— Vogue Magazine</p>
+        </div>
+    </section>
+
+    <!-- Interactive Appointment Booking -->
+    <section id="booking" class="py-24 lg:py-32 bg-brand-50 relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
+            
+            <!-- Left Info -->
+            <div class="lg:col-span-5 flex flex-col justify-center reveal">
+                <span class="text-brand-400 text-sm font-semibold tracking-[0.2em] uppercase mb-4 block">Reserve Your Time</span>
+                <h2 class="text-4xl lg:text-5xl font-serif text-brand-800 mb-6">Schedule a Consultation</h2>
+                <p class="text-brand-700 font-light leading-relaxed mb-10">
+                    Take the first step towards your aesthetic and wellness goals. Select your preferred date and time, and our concierge team will curate a bespoke experience for your visit.
+                </p>
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4">
+                        <i class="ph-light ph-map-pin text-2xl text-brand-400 mt-1"></i>
+                        <div>
+                            <h4 class="font-medium text-brand-800">The Clinic</h4>
+                            <p class="text-brand-600 font-light text-sm mt-1">124 Luxury Avenue, Suite 400<br>Beverly Hills, CA 90210</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <i class="ph-light ph-phone text-2xl text-brand-400 mt-1"></i>
+                        <div>
+                            <h4 class="font-medium text-brand-800">Contact</h4>
+                            <p class="text-brand-600 font-light text-sm mt-1">+1 (310) 555-0198<br>concierge@auraluxe.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Booking Form -->
+            <div class="lg:col-span-7 reveal reveal-delay-2">
+                <div class="bg-white p-8 md:p-12 shadow-2xl shadow-brand-200/50 rounded-sm relative overflow-hidden">
+                    
+                    <!-- Success Message Overlay (Hidden by default) -->
+                    <div id="success-message" class="absolute inset-0 bg-white z-10 flex flex-col items-center justify-center text-center p-8 hidden opacity-0 transition-opacity duration-500">
+                        <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mb-6">
+                            <i class="ph-light ph-check text-3xl text-green-600"></i>
+                        </div>
+                        <h3 class="text-2xl font-serif text-brand-800 mb-4">Request Received</h3>
+                        <p class="text-brand-600 font-light">Thank you. Your consultation request has been securely submitted. Our medical concierge will contact you shortly to confirm your appointment.</p>
+                        <button id="reset-form-btn" class="mt-8 text-sm uppercase tracking-widest text-brand-400 border-b border-brand-400 pb-1 hover:text-brand-800 hover:border-brand-800 transition-colors">Book Another</button>
+                    </div>
+
+                    <form id="appointment-form" class="space-y-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <input type="text" id="firstName" placeholder="First Name *" required class="input-field">
+                            </div>
+                            <div>
+                                <input type="text" id="lastName" placeholder="Last Name *" required class="input-field">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <input type="email" id="email" placeholder="Email Address *" required class="input-field">
+                            </div>
+                            <div>
+                                <input type="tel" id="phone" placeholder="Phone Number *" required class="input-field">
+                            </div>
+                        </div>
+
+                        <div>
+                            <select id="service" required class="input-field text-brand-700 bg-white appearance-none cursor-pointer">
+                                <option value="" disabled selected>Select Area of Interest *</option>
+                                <option value="injectables">Aesthetic Injectables</option>
+                                <option value="skin">Skin Rejuvenation & Lasers</option>
+                                <option value="wellness">Wellness & IV Therapy</option>
+                                <option value="consultation">General Consultation</option>
+                            </select>
+                        </div>
+
+                        <!-- Date & Time Picker UI -->
+                        <div class="pt-4">
+                            <h4 class="text-sm font-medium text-brand-800 mb-4 uppercase tracking-wider">Preferred Date & Time</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div>
+                                    <input type="date" id="date" required class="input-field text-brand-700 font-light" min="">
+                                </div>
+                                <div class="grid grid-cols-3 gap-3" id="time-slots">
+                                    <div class="time-slot text-center py-2 text-sm font-light text-brand-600 cursor-pointer rounded-sm" data-time="09:00 AM">09:00 AM</div>
+                                    <div class="time-slot text-center py-2 text-sm font-light text-brand-600 cursor-pointer rounded-sm" data-time="11:00 AM">11:00 AM</div>
+                                    <div class="time-slot text-center py-2 text-sm font-light text-brand-600 cursor-pointer rounded-sm" data-time="02:00 PM">02:00 PM</div>
+                                    <div class="time-slot text-center py-2 text-sm font-light text-brand-600 cursor-pointer rounded-sm" data-time="04:00 PM">04:00 PM</div>
+                                    <input type="hidden" id="selectedTime" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-brand-800 text-white py-4 text-sm uppercase tracking-widest hover:bg-brand-600 transition-colors mt-8 rounded-sm">
+                            Submit Request
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-900 text-brand-100 py-16">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-brand-800 pb-12 mb-8">
+                <div class="col-span-1 md:col-span-2">
+                    <a href="#" class="text-2xl font-serif tracking-wide text-white flex items-center gap-2 mb-6">
+                        <i class="ph-light ph-sparkle text-brand-400"></i>
+                        AURA LUXE
+                    </a>
+                    <p class="font-light text-brand-300 max-w-sm text-sm leading-relaxed">
+                        Redefining the standard of aesthetic medicine through artistry, safety, and uncompromising luxury.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-serif text-lg mb-6 text-white">Explore</h4>
+                    <ul class="space-y-3 text-sm font-light text-brand-300">
+                        <li><a href="#about" class="hover:text-brand-400 transition-colors">Philosophy</a></li>
+                        <li><a href="#services" class="hover:text-brand-400 transition-colors">Treatments</a></li>
+                        <li><a href="#facility" class="hover:text-brand-400 transition-colors">The Clinic</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Patient Portal</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-serif text-lg mb-6 text-white">Legal</h4>
+                    <ul class="space-y-3 text-sm font-light text-brand-300">
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Cancellation Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-light text-brand-500 uppercase tracking-widest">
+                <p>&copy; <span id="year"></span> Aura Luxe Clinic. All rights reserved.</p>
+                <div class="flex space-x-6 text-lg">
+                    <a href="#" class="hover:text-brand-400 transition-colors"><i class="ph ph-instagram-logo"></i></a>
+                    <a href="#" class="hover:text-brand-400 transition-colors"><i class="ph ph-facebook-logo"></i></a>
+                    <a href="#" class="hover:text-brand-400 transition-colors"><i class="ph ph-tiktok-logo"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Set current year in footer
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            // 2. Set min date for date picker to today
+            const dateInput = document.getElementById('date');
+            if(dateInput) {
+                const today = new Date().toISOString().split('T')[0];
+                dateInput.setAttribute('min', today);
+            }
+
+            // 3. Navbar scroll effect
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('nav-scrolled', 'py-3');
+                    navbar.classList.remove('py-4');
+                } else {
+                    navbar.classList.remove('nav-scrolled', 'py-3');
+                    navbar.classList.add('py-4');
+                }
+            });
+
+            // 4. Mobile Menu Toggle
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+
+            mobileBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            // Close mobile menu on link click
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // 5. Scroll Reveal Animation Logic (Intersection Observer)
+            const revealElements = document.querySelectorAll('.reveal');
+            
+            const revealOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Only animate once
+                });
+            }, revealOptions);
+
+            revealElements.forEach(el => {
+                revealOnScroll.observe(el);
+            });
+
+            // 6. Time Slot Selection Logic
+            const timeSlots = document.querySelectorAll('.time-slot');
+            const selectedTimeInput = document.getElementById('selectedTime');
+
+            timeSlots.forEach(slot => {
+                slot.addEventListener('click', () => {
+                    // Remove selected class from all
+                    timeSlots.forEach(s => s.classList.remove('selected'));
+                    // Add to clicked
+                    slot.classList.add('selected');
+                    // Update hidden input
+                    selectedTimeInput.value = slot.getAttribute('data-time');
+                });
+            });
+
+            // 7. Form Submission Logic
+            const form = document.getElementById('appointment-form');
+            const successMessage = document.getElementById('success-message');
+            const resetBtn = document.getElementById('reset-form-btn');
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Basic validation for custom time slots
+                if(!selectedTimeInput.value) {
+                    alert('Please select a preferred time slot.');
+                    return;
+                }
+
+                // Simulate API call and Show Success
+                successMessage.classList.remove('hidden');
+                // Allow a small delay for display before fading in
+                setTimeout(() => {
+                    successMessage.classList.add('opacity-100');
+                    form.style.opacity = '0'; // Hide form behind it
+                }, 50);
+            });
+
+            resetBtn.addEventListener('click', () => {
+                form.reset();
+                timeSlots.forEach(s => s.classList.remove('selected'));
+                selectedTimeInput.value = '';
+                
+                successMessage.classList.remove('opacity-100');
+                form.style.opacity = '1';
+                
+                setTimeout(() => {
+                    successMessage.classList.add('hidden');
+                }, 500); // Wait for fade out
+            });
+        });
+    </script>
+</body>
+</html>
